@@ -44,7 +44,7 @@ int main()
 
     TriangleMesh *triangle = new TriangleMesh();
 
-    unsigned int shader = make_shader("./shaders/vertex.txt", "./shaders/fragment.txt");
+    unsigned int shader = make_shader("./src/shaders/vertex.txt", "./src/shaders/fragment.txt");
 
     glUseProgram(shader);
 
