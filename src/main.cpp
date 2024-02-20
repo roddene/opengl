@@ -3,14 +3,15 @@
 #include "linear.h"
 #include <filesystem>
 
-    vec3 quad_position = {0.0f, 0.0f, 0.0f};
+    glm::vec3 quad_position = {0.0f, 0.0f, 0.0f};
 unsigned int make_shader(const std::string &vertex_filepath, const std::string &fragment_filepath);
 unsigned int make_module(const std::string &filepath, unsigned int module_type);
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 int main()
 {
-    vec3 camera_position = {0.0f,-.1f,2.0f};
-    vec3 camera_target = {0.0f, 0.0f, 0.0f};
+    glm::vec3 camera_position = {0.0f,-.1f,2.0f};
+    glm::vec3 camera_target = {0.0f, 0.0f, 0.0f};
+    glm::vec3 up ={9.0f,0.0f,0.0f};
 
 
     std::cout << std::filesystem::current_path() << '\n';
@@ -52,23 +53,25 @@ int main()
     unsigned int view_location  = glGetUniformLocation(shader,"view");  
     unsigned int proj_location  = glGetUniformLocation(shader,"projection");  
 
-    mat4 view = create_look_at(camera_position,camera_target);
-    glUniformMatrix4fv(view_location,1,GL_FALSE,view.entries);
+    glm::mat4 view = glm::lookAt(camera_position,camera_target,up);
+    glUniformMatrix4fv(view_location,1,GL_FALSE,glm::value_ptr(view));
 
     //1.0f represents screen aspect ratio.
-    mat4 projection = create_perspective_projection(45.0f,640.0f/480.0f,0.1f,10.0f);
-    glUniformMatrix4fv(proj_location,1,GL_FALSE,projection.entries);
+    glm::mat4 projection = glm::perspective(45.0f,640.0f/480.0f,0.1f,10.0f);
+    glUniformMatrix4fv(proj_location,1,GL_FALSE,glm::value_ptr(projection));
 
     glfwSetKeyCallback(window, key_callback);
 
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model,quad_position);
+        model = glm::rotate(model,(float)(glfwGetTime()),{1.0f,1.0f,0.0f});
 
-        mat4 model = create_model_transform(10*glfwGetTime(), quad_position);
         //mat4 model = create_model_transform(0, quad_position);
 
-        glUniformMatrix4fv(model_location, 1, GL_FALSE, model.entries);
+        glUniformMatrix4fv(model_location, 1, GL_FALSE, glm::value_ptr(model));
 
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -152,25 +155,25 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 {
     if (key == GLFW_KEY_D && action == GLFW_REPEAT)
     {
-        quad_position.entries[0] += 0.01f;
+        glm::value_ptr(quad_position)[0] += 0.01f;
     }
     if (key == GLFW_KEY_A && action == GLFW_REPEAT)
     {
-        quad_position.entries[0] += -0.01f;
+        glm::value_ptr(quad_position)[0] += -0.01f;
     }
     if (key == GLFW_KEY_W && action == GLFW_REPEAT)
     {
-        quad_position.entries[1] += 0.01f;
+        glm::value_ptr(quad_position)[1] += 0.01f;
     }
     if (key == GLFW_KEY_S && action == GLFW_REPEAT)
     {
-        quad_position.entries[1] += -0.01f;
-        std::cout<< quad_position.entries[1]<<"\n";
+        glm::value_ptr(quad_position)[1] += -0.01f;
+        std::cout<< glm::value_ptr(quad_position)[1]<<"\n";
     }if (key == GLFW_KEY_Q && action == GLFW_REPEAT)
     {
-        quad_position.entries[2] += 0.01f;
+        glm::value_ptr(quad_position)[2] += 0.01f;
     }if (key == GLFW_KEY_E && action == GLFW_REPEAT)
     {
-        quad_position.entries[2] += -0.01f;
+        glm::value_ptr(quad_position)[2] += -0.01f;
     }
 }
