@@ -1,0 +1,14 @@
+#pragma once
+#include "../config.h"
+#include "../components/camera_component.h"
+#include "../components/transform_component.h"
+
+
+class MotionSystem{
+    public:
+
+    void update(
+        std::unordered_map<unsigned int,TransformComponent &transformComponents,
+        std::unordered_map<unsigned int,PhysicsComponent &physicsComponents,
+        float dt);
+};
