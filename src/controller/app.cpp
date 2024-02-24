@@ -124,6 +124,8 @@ void App::set_up_glfw()
 
     window = glfwCreateWindow(SCREENWIDTH, SCREENHEIGHT, "Window", NULL, NULL);
     glfwMakeContextCurrent(window);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
