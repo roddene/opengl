@@ -7,10 +7,22 @@
     <ClCompile Include="C:\opengl\src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\opengl\src\triangle_mesh.cpp">
+    <ClCompile Include="C:\opengl\src\systems\camera_system.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\opengl\src\linear.cpp">
+    <ClCompile Include="C:\opengl\src\systems\motion_system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\opengl\src\systems\render_system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\opengl\src\controller\app.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\opengl\src\view\shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\opengl\src\factories\factory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

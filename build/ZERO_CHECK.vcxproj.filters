@@ -6,8 +6,49 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <None Include="C:\opengl\lib\glfw-3.3\CMakeLists.txt">
+      <Filter>Buildsystem Input Files\lib\glfw-3.3</Filter>
+    </None>
+    <None Include="C:\opengl\lib\glfw-3.3\cmake_uninstall.cmake.in">
+      <Filter>Buildsystem Input Files\lib\glfw-3.3</Filter>
+    </None>
+    <None Include="C:\opengl\lib\glfw-3.3\examples\CMakeLists.txt">
+      <Filter>Buildsystem Input Files\lib\glfw-3.3\examples</Filter>
+    </None>
+    <None Include="C:\opengl\lib\glfw-3.3\src\CMakeLists.txt">
+      <Filter>Buildsystem Input Files\lib\glfw-3.3\src</Filter>
+    </None>
+    <None Include="C:\opengl\lib\glfw-3.3\src\glfw3.pc.in">
+      <Filter>Buildsystem Input Files\lib\glfw-3.3\src</Filter>
+    </None>
+    <None Include="C:\opengl\lib\glfw-3.3\src\glfw3Config.cmake.in">
+      <Filter>Buildsystem Input Files\lib\glfw-3.3\src</Filter>
+    </None>
+    <None Include="C:\opengl\lib\glfw-3.3\src\glfw_config.h.in">
+      <Filter>Buildsystem Input Files\lib\glfw-3.3\src</Filter>
+    </None>
+    <None Include="C:\opengl\lib\glfw-3.3\tests\CMakeLists.txt">
+      <Filter>Buildsystem Input Files\lib\glfw-3.3\tests</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <Filter Include="CMake Rules">
       <UniqueIdentifier>{80BB3936-A012-3998-9AFB-52700D74F299}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{01A534B0-D2E0-35D6-99FB-77935A45D383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\lib\glfw-3.3">
+      <UniqueIdentifier>{4700BDE7-7F11-3880-9586-6F9F55FB5BF0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\lib\glfw-3.3\examples">
+      <UniqueIdentifier>{CDC51EBD-D429-3C8D-8AA7-BAC618D47179}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\lib\glfw-3.3\src">
+      <UniqueIdentifier>{41B86506-D78E-323E-B581-33C049DEA590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buildsystem Input Files\lib\glfw-3.3\tests">
+      <UniqueIdentifier>{9FB4632E-102D-3300-820B-9FC6D93EF669}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

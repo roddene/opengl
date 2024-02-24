@@ -1,6 +1,7 @@
 #include "render_system.h"
 
     RenderSystem::RenderSystem(unsigned int shader, GLFWwindow* window){
+        glUseProgram(shader);
         modelLocation = glGetUniformLocation(shader,"model");;
         this->window = window;
     }
@@ -14,13 +15,15 @@ void RenderSystem::update(
         for (std::pair<unsigned int, RenderComponent> entity: renderComponents){
             TransformComponent& transform = transformComponents[entity.first];
             glm::mat4 model = glm::mat4(1.0f);
-            model - glmL::translate(model,transform.position);
-            model - glm::rotate(model,glms::radians(transform.eulers.z),{0.0f,0.0f,1.0f});
+            model = glm::translate(model,transform.position);
+            model = glm::rotate(model,glm::radians(transform.eulers.z),{0.0f,0.0f,1.0f});
             glUniformMatrix4fv(modelLocation,1,GL_FALSE,glm::value_ptr(model));
-        glBindVertexArray(entity.second.mesh);
-        glDrawArrays(GL_TRIANGLES,0,36)
-
-        }            ;
+            //std::cout << entity.second.mesh;
+        glBindVertexArray(entity.second.VAO);
+        glDrawArrays(GL_TRIANGLES,0,entity.second.vertexCount);
+        
+        //std::cout << model;
+        }
         glfwSwapBuffers(window);
 
 

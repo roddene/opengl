@@ -5,7 +5,7 @@ unsigned int make_shader(const std::string &vertex_filepath, const std::string &
     modules.push_back(make_module(vertex_filepath, GL_VERTEX_SHADER));
     modules.push_back(make_module(fragment_filepath, GL_FRAGMENT_SHADER));
 
-    for (int i = 0; i < modules.size(); i++)
+    for (unsigned int i = 0; i < modules.size(); i++)
         std::cout << modules.at(i) << ' ';
     unsigned int shader = glCreateProgram();
     for (unsigned int shaderModule : modules)
@@ -31,7 +31,6 @@ unsigned int make_shader(const std::string &vertex_filepath, const std::string &
 
 unsigned int make_module(const std::string &filepath, unsigned int module_type)
 {
-    std::cout<< std::filesystem::current_path() << "\n";
     printf("l:%s\n", filepath.c_str());
     std::ifstream file;
     std::stringstream bufferedLines;

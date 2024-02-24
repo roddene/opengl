@@ -13,7 +13,7 @@ class RenderSystem{
 
 
     private:
-    unsiged int modelLocation
+    unsigned int modelLocation;
     GLFWwindow* window;
     
-}
+};
