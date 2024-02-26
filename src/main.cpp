@@ -15,15 +15,17 @@ int main()
         app->physicsComponents
         );
 
-    for (int j =0;j<5;j++){
-    for(int i = 0;i<5;i++){
-        std::cout << i/4.0f <<"\n";
-    factory->make_cube(
-		{3.0f, i/1.5f, j/1.5f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 10.0f});
+    // for (int j =0;j<5;j++){
+    // for(int i = 0;i<5;i++){
+    //     std::cout << i/4.0f <<"\n";
+    // factory->make_cube(
+	// 	{3.0f, i/1.5f, j/1.5f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 10.0f});
 
-    }}
+    // }}
+    factory->make_circle({0,0,0},{0,0,0},{0,0,0});
 
-    unsigned int cameraEntity = factory->make_camera({-2.0f,0.0f,1.0f},{0.0f,0.0f,0.0f});
+    unsigned int cameraEntity = factory->make_camera({0.0f,0.0f,-2.0f},{0.0f,180.0f,230.0f});
+
     CameraComponent* camera = new CameraComponent();
     app->cameraComponent = camera;
     app->cameraID = cameraEntity;

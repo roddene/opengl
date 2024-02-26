@@ -20,7 +20,15 @@ void RenderSystem::update(
             glUniformMatrix4fv(modelLocation,1,GL_FALSE,glm::value_ptr(model));
             //std::cout << entity.second.mesh;
         glBindVertexArray(entity.second.VAO);
-        glDrawArrays(GL_TRIANGLES,0,entity.second.vertexCount);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,entity.second.EBO);
+        if (entity.second.EBO){
+            glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+
+            //std::cout <<entity.second.indexCount << "\n";
+            glDrawElements(GL_TRIANGLES,entity.second.indexCount,GL_UNSIGNED_INT,0);
+        }else{
+        //glDrawArrays(GL_TRIANGLES,0,entity.second.vertexCount);
+        }
         
         //std::cout << model;
         }

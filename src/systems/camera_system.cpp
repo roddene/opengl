@@ -50,6 +50,16 @@ bool CameraSystem::update(
 
     //Keys
     glm::vec3 dPos = {0.0f, 0.0f, 0.0f};
+    if (glfwGetKey(window,GLFW_KEY_P) == GLFW_PRESS){
+        std::cout 
+        << pos[0]<< ","
+        << pos[1]<< ","
+        << pos[2]<< " "
+
+         <<eulers[0] <<","
+         <<eulers[1] <<","
+         <<eulers[2] <<"\n";
+    }
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         dPos.x += 1.0f;
     }

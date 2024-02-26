@@ -23,77 +23,6 @@ unsigned int App::make_entity()
     return entity_count++;
 }
 
-unsigned int App::make_mesh(glm::vec3 size)
-{
-    float l = size.x;
-    float w = size.y;
-    float h = size.z;
-
-    std::vector<float> vertices = {
-         l,  w, -h, 1.0f, 1.0f,1.0f,
-         l, -w, -h, 1.0f, 0.0f,1.0f,
-        -l, -w, -h, 0.0f, 0.0f,1.0f,
-        -l, -w, -h, 0.0f, 0.0f,1.0f,
-        -l,  w, -h, 0.0f, 1.0f,1.0f,
-         l,  w, -h, 1.0f, 1.0f,1.0f,
-
-        -l, -w,  h, 0.0f, 0.0f,1.0f,
-         l, -w,  h, 1.0f, 0.0f,1.0f,
-         l,  w,  h, 1.0f, 1.0f,1.0f,
-         l,  w,  h, 1.0f, 1.0f,1.0f,
-        -l,  w,  h, 0.0f, 1.0f,1.0f,
-        -l, -w,  h, 0.0f, 0.0f,1.0f,
-
-        -l,  w,  h, 1.0f, 1.0f,1.0f,
-        -l,  w, -h, 1.0f, 0.0f,1.0f,
-        -l, -w, -h, 0.0f, 0.0f,1.0f,
-        -l, -w, -h, 0.0f, 0.0f,1.0f,
-        -l, -w,  h, 0.0f, 1.0f,1.0f,
-        -l,  w,  h, 1.0f, 1.0f,1.0f,
-
-         l, -w, -h, 0.0f, 0.0f,1.0f,
-         l,  w, -h, 1.0f, 0.0f,1.0f,
-         l,  w,  h, 1.0f, 1.0f,1.0f,
-         l,  w,  h, 1.0f, 1.0f,1.0f,
-         l, -w,  h, 0.0f, 1.0f,1.0f,
-         l, -w, -h, 0.0f, 0.0f,1.0f,
-
-        -l, -w, -h, 0.0f, 0.0f,1.0f,
-         l, -w, -h, 1.0f, 0.0f,1.0f,
-         l, -w,  h, 1.0f, 1.0f,  1.0f,
-         l, -w,  h, 1.0f, 1.0f,1.0f,
-        -l, -w,  h, 0.0f, 1.0f,1.0f,
-        -l, -w, -h, 0.0f, 0.0f,1.0f,
-
-         l,  w,  h, 1.0f, 1.0f,1.0f,
-         l,  w, -h, 1.0f, 0.0f,1.0f,
-        -l,  w, -h, 0.0f, 0.0f, 1.0f,
-        -l,  w, -h, 0.0f, 0.0f,1.0f,
-        -l,  w,  h, 0.0f, 1.0f,1.0f,
-         l,  w,  h, 1.0f, 1.0f,1.0f
-    };
-
-    unsigned int VAO;
-    glGenVertexArrays(1,&VAO);
-    VAOs.push_back(VAO);
-    glBindVertexArray(VAO);
-
-    unsigned int VBO;
-    glGenBuffers(1,&VBO);
-    VBOs.push_back(VBO);
-    glBindBuffer(GL_ARRAY_BUFFER,VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), 
-        vertices.data(), GL_STATIC_DRAW);
-
-        //position
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24, (void*)0);
-    glEnableVertexAttribArray(0);
-
-    //color
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24, (void*)12);
-    glEnableVertexAttribArray(1);
-    return VAO;
-}
 
 void App::run()
 {
@@ -150,7 +79,7 @@ void App::set_up_opengl(){
 
     //glfwSetKeyCallback(window, key_callback);
 
-    shader = make_shader("./shaders/vertex.txt", "./shaders/fragment.txt");
+    shader = make_shader("./src/shaders/vertex.glsl", "./src/shaders/fragment.glsl");
 
     glUseProgram(shader);
     unsigned int projLocation = glGetUniformLocation(shader, "projection");
