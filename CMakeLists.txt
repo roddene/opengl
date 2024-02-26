@@ -10,7 +10,7 @@ find_package(OpenGL REQUIRED)
 add_executable(opengl_project
 src/config.h
 src/main.cpp
-src/glad.c
+"include/glad/glad.c"
 src/systems/camera_system.cpp
 src/systems/motion_system.cpp
 src/systems/render_system.cpp
