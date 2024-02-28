@@ -16,5 +16,6 @@ class CameraSystem{
     unsigned int viewLocation;
     glm::vec3 global_up = {0.0f,0.0f,1.0f};
     GLFWwindow* window;
+    unsigned int drawMode = 0;
     
 };

@@ -22,7 +22,8 @@ int main()
 	// 	{3.0f, i/1.5f, j/1.5f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 10.0f});
 
     // }}
-    factory->make_circle({0,0,0},{0,0,0},{0,0,0});
+    factory->make_circle({2,0,0},{0,0,0},{0,0,10.0f});
+    //factory->make_cube({0,0,0},{0,0,0},{0,0,10.0f});
 
     unsigned int cameraEntity = factory->make_camera({0.0f,0.0f,-2.0f},{0.0f,180.0f,230.0f});
 

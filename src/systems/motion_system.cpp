@@ -7,6 +7,7 @@ void MotionSystem::update(
     for(std::pair<unsigned int,PhysicsComponent> entity:physicsComponents){
         transformComponents[entity.first].position+=entity.second.velocity *dt;
         transformComponents[entity.first].eulers+=entity.second.eulerVelocity * dt;
+
         if (transformComponents[entity.first].eulers.z >360){
 
             transformComponents[entity.first].eulers.z-=360;

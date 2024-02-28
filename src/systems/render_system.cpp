@@ -22,12 +22,11 @@ void RenderSystem::update(
         glBindVertexArray(entity.second.VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,entity.second.EBO);
         if (entity.second.EBO){
-            glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
             //std::cout <<entity.second.indexCount << "\n";
             glDrawElements(GL_TRIANGLES,entity.second.indexCount,GL_UNSIGNED_INT,0);
         }else{
-        //glDrawArrays(GL_TRIANGLES,0,entity.second.vertexCount);
+        glDrawArrays(GL_TRIANGLES,0,entity.second.vertexCount);
         }
         
         //std::cout << model;

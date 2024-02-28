@@ -60,6 +60,19 @@ bool CameraSystem::update(
          <<eulers[1] <<","
          <<eulers[2] <<"\n";
     }
+
+    if (glfwGetKey(window,GLFW_KEY_M) == GLFW_PRESS){
+
+            if (drawMode==0 ){
+                glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+                drawMode = 1;
+            }else if (drawMode == 1){
+
+            glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
+            drawMode = 0;
+            }
+
+    }
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         dPos.x += 1.0f;
     }

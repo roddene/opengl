@@ -30,7 +30,7 @@ void App::run()
     {
 
 
-        motionSystem->update(    transformComponents, physicsComponents, 16.67f / 1000.0f);
+        motionSystem->update(transformComponents, physicsComponents, 16.67f / 1000.0f);
 
         bool should_close = cameraSystem->update(
             transformComponents, cameraID, *cameraComponent, 16.67f / 1000.0f);
