@@ -5,6 +5,9 @@
 #include "../components/physics_component.h"
 #include "../components/transform_component.h"
 #include "../components/render_component.h"
+#define PI glm::pi<float>()
+#define HALF_PI glm::half_pi<float>()
+#define TWO_PI glm::two_pi<float>()
 
 class Factory{
 

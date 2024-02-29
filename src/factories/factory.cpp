@@ -54,107 +54,113 @@ unsigned int Factory::triangle_number(unsigned int n)
 RenderComponent Factory::make_sphere_mesh(glm::vec3 plane)
 {
 
-    int tCount = 10;
+    // int res = 5;
 
     std::vector<float> vertices = {
 
-    };
+     };
     std::vector<unsigned int> indices = {};
-    // upside down
-    unsigned int offsetIndex = -1;
 
 
-    for (int p1 = -1; p1 < 2; (p1 = p1 + 2))
-    {
-        for (int p2 = -1; p2 < 2; (p2 = p2 + 2))
-        {
-            for (int p3 = -1; p3 < 2; (p3 = p3 + 2))
-            {
-                offsetIndex++;
-                int offset = offsetIndex*triangle_number(tCount+1);
-                std::cout << p1 << p2 << p3 << "\n";
-                int sign = p1 * p2 * p3;
+        unsigned int res = 100; // number of rows and columns
+		float circleStep = glm::two_pi<float>() / (float)res; // angle step between cells
+		float heightStep = glm::pi<float>() / (float)res; // height of row
 
-                for (int dx = 0; dx < tCount; dx++)
-                {
-                    for (int dy = 1; dy < tCount - dx; dy++)
-                    {
-                        int index1, index2, index3;
+		int row = 0;
+		int noVertices = 0;
+		float phi = -glm::half_pi<float>();
+		float y = glm::sin(phi);
+		float radius;
 
-                        index1 = dy + triangle_number(tCount + 1) - triangle_number(tCount + 1 - dx)+offset;
-                        index2 = triangle_number(tCount + 1) - triangle_number(tCount - dx) + dy+offset;
-                        index3 = triangle_number(tCount + 1) - triangle_number(tCount - dx) + dy - 1+offset;
-                        if (sign < 0)
-                        {
+		for (; phi < HALF_PI + heightStep; phi += heightStep, row++) {
+        
+            
+			 //y = glm::sin(phi);
+			// radius = glm::cos(phi);
+			int cell = 0;
+            
+            y = glm::sign(glm::sin(phi))* glm::acos(glm::cos(2*phi))/PI;
+            radius = glm::sign(glm::cos(phi))*glm::acos(glm::cos(2*phi+PI))/PI;
 
-                            indices.push_back(index1);
-                            indices.push_back(index2);
-                            indices.push_back(index3);
-                        }
-                        else
-                        {
-                            // reverse
-                            indices.push_back(index3);
-                            indices.push_back(index2);
-                            indices.push_back(index1);
-                        }
-                    }
-                }
-                // normal
-                for (int dx = 0; dx < tCount; dx++)
-                {
-                    for (int dy = 0; dy < tCount - dx; dy++)
-                    {
-                        int index1, index2, index3;
+			for (float th = 0; th < TWO_PI; th += circleStep, cell++) {
+        
+            
+            
+			vertices.push_back(radius*glm::sign(glm::cos(th))*glm::acos(glm::cos(2*th+PI))/PI);
+            vertices.push_back(y);
+           vertices.push_back(radius*glm::sign(glm::sin(th))*glm::acos(glm::cos(th*2))/PI);
+       //vertices.push_back(glm::sign(costh));
+       //vertices.push_back(th);
+       //vertices.push_back(1-phi-th);
 
-                        index1 = dy + triangle_number(tCount + 1) - triangle_number(tCount + 1 - dx) + offset;
-                        index2 = dy + triangle_number(tCount + 1) - triangle_number(tCount + 1 - dx)  + 1 +offset;
-                        index3 = triangle_number(tCount + 1) - triangle_number(tCount - dx) + dy+offset;
-                        if (sign < 0)
-                        {
+            vertices.push_back(0.0f);
+            vertices.push_back(1.0f);
+            vertices.push_back(0.0f);
 
-                            indices.push_back(index1);
-                            indices.push_back(index2);
-                            indices.push_back(index3);
-                        }
-                        else
-                        {
-                            // reverse
-                            indices.push_back(index3);
-                            indices.push_back(index2);
-                            indices.push_back(index1);
-                        }
-                    }
-                }
+				// add indices if not bottom row
+				if (row)
+				{
+					int nextCell = (cell + 1) % res;
+					indices.push_back((row - 1) * res + nextCell); // bottom right
+					indices.push_back(noVertices - res); // bottom left
+					indices.push_back(row * res + nextCell); // top right
 
-                for (int dx = 0; dx <= tCount; dx++)
-                {
-                    for (int dy = 0; dy <= tCount; dy++)
-                    {
-                        float x = dx / (float)tCount;
-                        float y = dy / (float)tCount;
-                        float z = 1 - x - y;
 
-                        glm::vec3 normal = glm::normalize(glm::vec3({x, y, z}));
-                        x = p1 * normal[0];
-                        y = p2 * normal[1];
-                        z = p3 * normal[2];
+					indices.push_back(noVertices - res); // bottom left
+					indices.push_back(noVertices); // top left (this vertex)
+					indices.push_back(row * res + nextCell); // top right
+				}
 
-                        if (p3 * z < -0.01f)
-                        { // floating point yikes
-                            continue;
-                        }
-                        vertices.push_back(x);
-                        vertices.push_back(y);
-                        vertices.push_back(z);
-                        vertices.push_back(dy/(float)tCount);
-                        vertices.push_back(dx/(float)tCount);
-                        vertices.push_back(1.0f);
-                    }
-                }
-            }
-        }
-    }
+				noVertices++;
+			}
+		}
+
+
+
+
+    // float circleStep = glm::two_pi<float>()/(float) res;
+    // float heightStep = glm::pi<float>()/(float) res;
+
+    // int row = 0;
+    // int vertexCount = 0;
+    // float phi = -glm::half_pi<float>();
+    // float y = glm::sin(phi);
+    // float radius;
+
+    // for (; phi<glm::half_pi<float>()+heightStep;phi+=heightStep,row++){
+    //     y = glm::sin(phi);
+    //     radius = glm::cos(phi);
+    //     int cell = 0;
+    //     for (float th = 0;th<glm::two_pi<float>();th+=circleStep,cell++){
+    //         vertices.push_back(radius*glm::cos(th));
+    //         vertices.push_back(y);
+    //         vertices.push_back(radius*glm::sin(th));
+
+    //         vertices.push_back(0.0f);
+    //         vertices.push_back(1.0f);
+    //         vertices.push_back(0.0f);
+
+    //         if (row){
+    //             int nextCell = (cell+1) %res;
+    //             indices.push_back(vertexCount-res);
+    //             indices.push_back((row-1)*res+nextCell);
+    //             indices.push_back(row*res+nextCell);
+
+    //             indices.push_back(vertexCount-res);
+    //             indices.push_back(vertexCount);
+    //             indices.push_back(row*res+nextCell);
+
+
+    //         }
+    //         vertexCount++;
+    //     }
+
+
+
+    // }
+
+
+    
 
 
     unsigned int VAO;
