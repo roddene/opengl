@@ -1,5 +1,6 @@
 #include "factory.h"
 
+
 Factory::Factory(
     std::unordered_map<unsigned int, TransformComponent> &transformComponents,
     std::unordered_map<unsigned int, RenderComponent> &renderComponents,
@@ -11,6 +12,7 @@ Factory::Factory(
 
 Factory::~Factory()
 {
+    glDeleteBuffers(EBOs.size(),EBOs.data());
     glDeleteBuffers(VBOs.size(), VBOs.data());
     glDeleteVertexArrays(VAOs.size(), VAOs.data());
 }
@@ -26,7 +28,7 @@ unsigned int Factory::make_camera(glm::vec3 position, glm::vec3 eulers)
     return entities_made++;
 }
 
-void Factory::make_circle(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity)
+void Factory::make_sphere(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity)
 {
     TransformComponent transform;
     transform.position = position;
@@ -41,130 +43,98 @@ void Factory::make_circle(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerV
     //     renderComponents[entities_made++] = render;
     //  RenderComponent render1 = make_sphere_mesh({-1.0f,-1.0f,-1.0f});
     //      renderComponents[entities_made++] = render1;
-
-    RenderComponent render = make_sphere_mesh({1.0f, 1.0f, 1.0f});
+    MeshVectorComponent vectors = make_sphere_mesh(10);
+    RenderComponent render = make_shape_colored(vectors,0);
     renderComponents[entities_made++] = render;
 }
 
-unsigned int Factory::triangle_number(unsigned int n)
+void Factory::make_octahedron(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity)
 {
-    return n * (n + 1) / 2;
+    TransformComponent transform;
+    transform.position = position;
+    transform.eulers = eulers;
+    transformComponents[entities_made] = transform;
+
+    PhysicsComponent physics;
+    physics.velocity = {0.0f, 0.0f, 0.0f};
+    physics.eulerVelocity = eulerVelocity;
+    physicsComponents[entities_made] = physics;
+    // RenderComponent render = make_sphere_mesh({-1.0f,1.0f,1.0f});
+    //     renderComponents[entities_made++] = render;
+    //  RenderComponent render1 = make_sphere_mesh({-1.0f,-1.0f,-1.0f});
+    //      renderComponents[entities_made++] = render1;
+    MeshVectorComponent vectors = make_octahedron_mesh(10);
+    RenderComponent render = make_shape_colored(vectors,0);
+    renderComponents[entities_made++] = render;
 }
 
-RenderComponent Factory::make_sphere_mesh(glm::vec3 plane)
-{
-
-    // int res = 5;
-
-    std::vector<float> vertices = {
-
-     };
-    std::vector<unsigned int> indices = {};
+float Factory::lerp(float a,float b, float t){
+    return (a*(1.0-t)) + (b*t);
+}
 
 
-        unsigned int res = 100; // number of rows and columns
-		float circleStep = glm::two_pi<float>() / (float)res; // angle step between cells
-		float heightStep = glm::pi<float>() / (float)res; // height of row
-
-		int row = 0;
-		int noVertices = 0;
-		float phi = -glm::half_pi<float>();
-		float y = glm::sin(phi);
-		float radius;
-
-		for (; phi < HALF_PI + heightStep; phi += heightStep, row++) {
-        
-            
-			 //y = glm::sin(phi);
-			// radius = glm::cos(phi);
-			int cell = 0;
-            
-            y = glm::sign(glm::sin(phi))* glm::acos(glm::cos(2*phi))/PI;
-            radius = glm::sign(glm::cos(phi))*glm::acos(glm::cos(2*phi+PI))/PI;
-
-			for (float th = 0; th < TWO_PI; th += circleStep, cell++) {
-        
-            
-            
-			vertices.push_back(radius*glm::sign(glm::cos(th))*glm::acos(glm::cos(2*th+PI))/PI);
-            vertices.push_back(y);
-           vertices.push_back(radius*glm::sign(glm::sin(th))*glm::acos(glm::cos(th*2))/PI);
-       //vertices.push_back(glm::sign(costh));
-       //vertices.push_back(th);
-       //vertices.push_back(1-phi-th);
-
-            vertices.push_back(0.0f);
-            vertices.push_back(1.0f);
-            vertices.push_back(0.0f);
-
-				// add indices if not bottom row
-				if (row)
-				{
-					int nextCell = (cell + 1) % res;
-					indices.push_back((row - 1) * res + nextCell); // bottom right
-					indices.push_back(noVertices - res); // bottom left
-					indices.push_back(row * res + nextCell); // top right
+void Factory::make_sphere_to_octahedron(glm::vec3 position,glm::vec3 eulers,glm::vec3 eulerVelocity){
 
 
-					indices.push_back(noVertices - res); // bottom left
-					indices.push_back(noVertices); // top left (this vertex)
-					indices.push_back(row * res + nextCell); // top right
-				}
+    MeshVectorComponent octVectors = make_octahedron_mesh(100);
+    MeshVectorComponent sphereVectors = make_sphere_mesh(100);
+    const int frameCount = 24;
 
-				noVertices++;
-			}
-		}
+    for (int frameIndex = 1; frameIndex<=frameCount;frameIndex++){
+    TransformComponent transform;
+    transform.position = position;
+    transform.eulers = eulers;
+    transformComponents[entities_made] = transform;
+    std::vector<float> vertexVector = {};
+    for(unsigned int i = 0;i<octVectors.vertices.size();i++){
+        float lerpedVertex = lerp(octVectors.vertices[i],sphereVectors.vertices[i],(float)frameIndex/frameCount);
+        vertexVector.push_back(lerpedVertex);
+
+
+
+    }     
+
+    PhysicsComponent physics;
+    physics.velocity = {0.0f, 0.0f, 0.0f};
+    physics.eulerVelocity = eulerVelocity;
+    physicsComponents[entities_made] = physics;
+ 
+    RenderComponent render = make_shape_colored({vertexVector,octVectors.indices},frameIndex);
+    renderComponents[entities_made++] = render;
+    }
+    //bounce back
+    for (int frameIndex = frameCount; frameIndex>0;frameIndex--){
+    TransformComponent transform;
+    transform.position = position;
+    transform.eulers = eulers;
+    transformComponents[entities_made] = transform;
+    std::vector<float> vertexVector = {};
+    for(unsigned int i = 0;i<octVectors.vertices.size();i++){
+        float lerpedVertex = lerp(octVectors.vertices[i],sphereVectors.vertices[i],(float)frameIndex/frameCount);
+        vertexVector.push_back(lerpedVertex);
+    } 
+
+
+    PhysicsComponent physics;
+    physics.velocity = {0.0f, 0.0f, 0.0f};
+    physics.eulerVelocity = eulerVelocity;
+    physicsComponents[entities_made] = physics;
+   
+    RenderComponent render = make_shape_colored({vertexVector,octVectors.indices},2*frameCount-frameIndex);
+    renderComponents[entities_made++] = render;
+    }
+
+}
 
 
 
 
-    // float circleStep = glm::two_pi<float>()/(float) res;
-    // float heightStep = glm::pi<float>()/(float) res;
 
-    // int row = 0;
-    // int vertexCount = 0;
-    // float phi = -glm::half_pi<float>();
-    // float y = glm::sin(phi);
-    // float radius;
-
-    // for (; phi<glm::half_pi<float>()+heightStep;phi+=heightStep,row++){
-    //     y = glm::sin(phi);
-    //     radius = glm::cos(phi);
-    //     int cell = 0;
-    //     for (float th = 0;th<glm::two_pi<float>();th+=circleStep,cell++){
-    //         vertices.push_back(radius*glm::cos(th));
-    //         vertices.push_back(y);
-    //         vertices.push_back(radius*glm::sin(th));
-
-    //         vertices.push_back(0.0f);
-    //         vertices.push_back(1.0f);
-    //         vertices.push_back(0.0f);
-
-    //         if (row){
-    //             int nextCell = (cell+1) %res;
-    //             indices.push_back(vertexCount-res);
-    //             indices.push_back((row-1)*res+nextCell);
-    //             indices.push_back(row*res+nextCell);
-
-    //             indices.push_back(vertexCount-res);
-    //             indices.push_back(vertexCount);
-    //             indices.push_back(row*res+nextCell);
-
-
-    //         }
-    //         vertexCount++;
-    //     }
-
-
-
-    // }
-
-
-    
-
+RenderComponent Factory::make_shape_colored(MeshVectorComponent details,unsigned int frameCount){
 
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
+
     VAOs.push_back(VAO);
     glBindVertexArray(VAO);
 
@@ -172,14 +142,14 @@ RenderComponent Factory::make_sphere_mesh(glm::vec3 plane)
     glGenBuffers(1, &VBO);
     VBOs.push_back(VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float),
-                 vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, details.vertices.size() * sizeof(float),
+                 details.vertices.data(), GL_STATIC_DRAW);
 
     unsigned int EBO;
     glGenBuffers(1, &EBO);
     EBOs.push_back(EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, details.indices.size() * sizeof(unsigned int), details.indices.data(), GL_STATIC_DRAW);
     std::cout << EBO << " ECO\n";
     // position
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24, (void *)0);
@@ -191,9 +161,11 @@ RenderComponent Factory::make_sphere_mesh(glm::vec3 plane)
 
     RenderComponent record = {};
     record.VAO = VAO;
+    record.VBO = VBO;
     record.EBO = EBO;
-    record.vertexCount = 3;
-    record.indexCount = indices.size();
+    record.frameCount = frameCount;
+    record.vertexCount = details.vertices.size();
+    record.indexCount = details.indices.size();
     return record;
 }
 

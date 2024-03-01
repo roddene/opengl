@@ -13,3 +13,7 @@
 #include <vector>
 #include <unordered_map>
 
+#define PI glm::pi<float>()
+#define HALF_PI glm::half_pi<float>()
+#define TWO_PI glm::two_pi<float>()
+

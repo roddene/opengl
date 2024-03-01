@@ -134,7 +134,6 @@ bool CameraSystem::update(
     // else if (eulers.z < 0) {
     //     eulers.z += 360;
     // }
-    return false;
 
         }
 

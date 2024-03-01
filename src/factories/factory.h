@@ -5,10 +5,10 @@
 #include "../components/physics_component.h"
 #include "../components/transform_component.h"
 #include "../components/render_component.h"
-#define PI glm::pi<float>()
-#define HALF_PI glm::half_pi<float>()
-#define TWO_PI glm::two_pi<float>()
+#include "../components/mesh_vector_component.h"
 
+#include "sphere.h"
+#include "octahedron.h"
 class Factory{
 
     public:
@@ -24,8 +24,13 @@ class Factory{
 
     void make_cube(glm::vec3 position,glm::vec3 eulers,glm::vec3 eulerVelocity);
 
-    void Factory::make_circle(glm::vec3 position,glm::vec3 eulers,glm::vec3 eulerVelocity);
+    void make_sphere(glm::vec3 position,glm::vec3 eulers,glm::vec3 eulerVelocity);
+
+    void make_octahedron(glm::vec3 position,glm::vec3 eulers,glm::vec3 eulerVelocity);
+    void make_sphere_to_octahedron(glm::vec3 position,glm::vec3 eulers,glm::vec3 eulerVelocity);
+
     private:
+    float lerp(float a,float b, float t);
 
     unsigned int entities_made = 0;
 
@@ -38,11 +43,11 @@ class Factory{
     std::vector<unsigned int> EBOs;
     std::vector<unsigned int> textures;
 
+    RenderComponent make_shape_colored(MeshVectorComponent details,unsigned int frameCount);
+
     RenderComponent make_cube_mesh(glm::vec3 size);
     RenderComponent make_circle_mesh(glm::vec3 size);
-    RenderComponent make_sphere_mesh(glm::vec3 size);
 
-    unsigned int triangle_number(unsigned int n);
     
 
 

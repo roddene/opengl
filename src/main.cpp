@@ -6,6 +6,9 @@
 #include "components/physics_component.h"
 #include "components/render_component.h"
 #include "factories/factory.h"
+#include "factories/sphere.h"
+#include "factories/octahedron.h"
+
 
 int main()
 {
@@ -22,9 +25,10 @@ int main()
 	// 	{3.0f, i/1.5f, j/1.5f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 10.0f});
 
     // }}
-    factory->make_circle({2,0,0},{0,0,0},{0,0,10.0f});
-    //factory->make_cube({0,0,0},{0,0,0},{0,0,10.0f});
-
+    //factory->make_sphere({2,0,0},{0,0,0},{0,0,10.0f});
+    //factory->make_octahedron({4,0,0},{0,0,0},{0,0,10.0f});
+    factory->make_sphere_to_octahedron({0,0,0},{0,0,0},{0,0,10.0f});
+    
     unsigned int cameraEntity = factory->make_camera({0.0f,0.0f,-2.0f},{0.0f,180.0f,230.0f});
 
     CameraComponent* camera = new CameraComponent();

@@ -1,3 +1,4 @@
 myprogram.exe
 build/
+build_wsl/
 .vscode/

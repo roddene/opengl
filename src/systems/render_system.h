@@ -15,5 +15,5 @@ class RenderSystem{
     private:
     unsigned int modelLocation;
     GLFWwindow* window;
-    
+     
 };
