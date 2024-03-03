@@ -120,7 +120,7 @@ void Factory::make_sphere_to_octahedron(glm::vec3 position,glm::vec3 eulers,glm:
     physics.eulerVelocity = eulerVelocity;
     physicsComponents[entities_made] = physics;
    
-    RenderComponent render = make_shape_colored({vertexVector,octVectors.indices},2*frameCount-frameIndex);
+    RenderComponent render = make_shape_colored({vertexVector,octVectors.indices},2*frameCount-frameIndex+1);
     renderComponents[entities_made++] = render;
     }
 

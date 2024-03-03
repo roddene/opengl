@@ -5,6 +5,7 @@
 #include "../components/physics_component.h"
 #include "../components/render_component.h"
 #include "../components/transform_component.h"
+#include "../components/light_component.h"
 
 #include "../systems/camera_system.h"
 #include "../systems/motion_system.h"
@@ -31,6 +32,8 @@ class App{
     CameraComponent* cameraComponent;
     unsigned int cameraID;
     std::unordered_map<unsigned int,RenderComponent> renderComponents;
+    std::unordered_map<unsigned int,LightComponent> lightComponents;
+
 
     private:
     void set_up_glfw();

@@ -10,11 +10,13 @@ void RenderSystem::update(
         
     
         std::unordered_map<unsigned int,TransformComponent> &transformComponents,
-        std::unordered_map<unsigned int,RenderComponent> &renderComponents){
+        std::unordered_map<unsigned int,RenderComponent> &renderComponents,
+        std::unordered_map<unsigned int,LightComponent> &lightComponents
+        ){
 
             int frameRate = 48;
             
-            int frame = (int)(glfwGetTime()*frameRate) %frameRate+1;
+            int frame = (int)(glfwGetTime()*frameRate/2) %frameRate+1;
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

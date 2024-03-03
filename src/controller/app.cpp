@@ -39,7 +39,7 @@ void App::run()
         {
             break;
         }
-        renderSystem->update(transformComponents, renderComponents);
+        renderSystem->update(transformComponents, renderComponents,lightComponents);
     }
 }
 
@@ -79,7 +79,7 @@ void App::set_up_opengl(){
 
     //glfwSetKeyCallback(window, key_callback);
 
-    shader = make_shader("./src/shaders/vertex.glsl", "./src/shaders/fragment.glsl");
+    shader = make_shader("./src/shaders/light_dst.vs", "./src/shaders/light_dst.fs");
 
     glUseProgram(shader);
     unsigned int projLocation = glGetUniformLocation(shader, "projection");

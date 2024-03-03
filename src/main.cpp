@@ -28,6 +28,7 @@ int main()
     //factory->make_sphere({2,0,0},{0,0,0},{0,0,10.0f});
     //factory->make_octahedron({4,0,0},{0,0,0},{0,0,10.0f});
     factory->make_sphere_to_octahedron({0,0,0},{0,0,0},{0,0,10.0f});
+    factory->make_cube({3.0,1.0,-1.0},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f});
     
     unsigned int cameraEntity = factory->make_camera({0.0f,0.0f,-2.0f},{0.0f,180.0f,230.0f});
 
