@@ -9,8 +9,9 @@ App::~App()
 {
     glDeleteBuffers(VBOs.size(), VBOs.data());
     glDeleteVertexArrays(VAOs.size(), VAOs.data());
-    glDeleteProgram(shader);
-
+    for (auto shader:shaders){
+    glDeleteProgram(shader->ID);
+    }
     delete motionSystem;
     delete cameraSystem;
     delete renderSystem;
@@ -79,20 +80,24 @@ void App::set_up_opengl(){
 
     //glfwSetKeyCallback(window, key_callback);
 
-    shader = make_shader("./src/shaders/light_dst.vs", "./src/shaders/light_dst.fs");
-
-    glUseProgram(shader);
-    unsigned int projLocation = glGetUniformLocation(shader, "projection");
-	glm::mat4 projection = glm::perspective(
+    Shader* dst_shader = new Shader("./src/shaders/light_dst.vs", "./src/shaders/light_dst.fs");
+    Shader* src_shader = new Shader("./src/shaders/light_src.vs", "./src/shaders/light_src.fs");
+glm::mat4 projection = glm::perspective(
 		45.0f, 640.0f / 480.0f, 0.1f, 10.0f);
+    shaders.push_back(dst_shader);
+   shaders.push_back(src_shader);
+    for (auto shader:shaders){
+    glUseProgram(shader->ID);
+    unsigned int projLocation = glGetUniformLocation(shader->ID, "projection");
 	glUniformMatrix4fv(projLocation, 1, GL_FALSE, glm::value_ptr(projection));
+    }
 }
 
 void App::make_systems(){
     std::cout <<"making systems\n";
     motionSystem = new MotionSystem();
-    cameraSystem = new CameraSystem(shader, window);
-    renderSystem = new RenderSystem(shader,window);
+    cameraSystem = new CameraSystem(shaders, window);
+    renderSystem = new RenderSystem(shaders,window);
 }
 
 

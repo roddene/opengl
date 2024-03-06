@@ -1,10 +1,13 @@
 #include "camera_system.h"
 
-CameraSystem::CameraSystem(unsigned int shader,GLFWwindow* window){
+CameraSystem::CameraSystem(std::vector<Shader*> shaders,GLFWwindow* window){
     this->window = window;
-
-    glUseProgram(shader);
-    viewLocation = glGetUniformLocation(shader,"view");
+    this->shaders = shaders;
+    for(auto shader:shaders){
+    glUseProgram(shader->ID);
+    int viewLocation = glGetUniformLocation(shader->ID,"view");
+    viewLocations[shader->ID] = viewLocation;
+    }
 }
 
 
@@ -43,8 +46,10 @@ bool CameraSystem::update(
             up = glm::normalize(glm::cross(right,forwards));
 
             glm::mat4 view = glm::lookAt(pos,pos+forwards,up);
-
-            glUniformMatrix4fv(viewLocation,1,GL_FALSE,glm::value_ptr(view));
+            for (auto shader:shaders){
+            glUseProgram(shader->ID);//maybe not needed?
+            glUniformMatrix4fv(viewLocations[shader->ID],1,GL_FALSE,glm::value_ptr(view));
+            }
 
 
 

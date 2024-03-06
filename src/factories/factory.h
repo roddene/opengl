@@ -6,6 +6,7 @@
 #include "../components/transform_component.h"
 #include "../components/render_component.h"
 #include "../components/mesh_vector_component.h"
+#include "../view/shader.h"
 
 #include "sphere.h"
 #include "octahedron.h"
@@ -16,7 +17,8 @@ class Factory{
 
     std::unordered_map<unsigned int,TransformComponent>& transformComponents,
     std::unordered_map<unsigned int,RenderComponent>& renderComponents,
-    std::unordered_map<unsigned int,PhysicsComponent>& physicsComponents
+    std::unordered_map<unsigned int,PhysicsComponent>& physicsComponents,
+    std::vector<Shader*> shaders
     );
     ~Factory();
 
@@ -42,11 +44,11 @@ class Factory{
     std::vector<unsigned int> VBOs;
     std::vector<unsigned int> EBOs;
     std::vector<unsigned int> textures;
+    std::vector<Shader*> shaders;
 
     RenderComponent make_shape_colored(MeshVectorComponent details,unsigned int frameCount);
 
     RenderComponent make_cube_mesh(glm::vec3 size);
-    RenderComponent make_circle_mesh(glm::vec3 size);
 
     
 

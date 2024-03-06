@@ -34,6 +34,8 @@ class App{
     std::unordered_map<unsigned int,RenderComponent> renderComponents;
     std::unordered_map<unsigned int,LightComponent> lightComponents;
 
+    std::vector<Shader*> shaders;
+
 
     private:
     void set_up_glfw();
@@ -46,7 +48,7 @@ class App{
     std::vector<unsigned int> VBOs;
     std::vector<unsigned int> textures;
 
-    unsigned int shader;
+    
 
     //System
 

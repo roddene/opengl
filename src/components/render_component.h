@@ -2,6 +2,6 @@
 #include "../config.h"
 
 struct RenderComponent{
-    unsigned int material,VAO,VBO,vertexCount,EBO,indexCount,frameCount;
+    unsigned int material,VAO,VBO,vertexCount,EBO,indexCount,frameCount,shaderId;
 
 };

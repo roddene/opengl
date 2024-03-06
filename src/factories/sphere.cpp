@@ -45,6 +45,13 @@ MeshVectorComponent make_sphere_mesh(unsigned int res)
             vertices.push_back(1.0f);
             vertices.push_back(0.0f);
 
+			//normals
+			vertices.push_back(0.0f);
+			vertices.push_back(0.0f);
+			vertices.push_back(0.0f);
+
+
+
 				// add indices if not bottom row
 				if (row)
 				{

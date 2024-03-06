@@ -1,5 +1,5 @@
 #include "shader.h"
-unsigned int make_shader(const std::string &vertex_filepath, const std::string &fragment_filepath)
+Shader::Shader(const std::string &vertex_filepath, const std::string &fragment_filepath)
 {
     std::vector<unsigned int> modules;
     modules.push_back(make_module(vertex_filepath, GL_VERTEX_SHADER));
@@ -26,10 +26,10 @@ unsigned int make_shader(const std::string &vertex_filepath, const std::string &
     {
         glDeleteShader(shaderModule);
     }
-    return shader;
+    ID = shader;
 }
 
-unsigned int make_module(const std::string &filepath, unsigned int module_type)
+unsigned int Shader::make_module(const std::string &filepath, unsigned int module_type)
 {
     printf("l:%s\n", filepath.c_str());
     std::ifstream file;
@@ -62,3 +62,15 @@ unsigned int make_module(const std::string &filepath, unsigned int module_type)
     }
     return shaderModule;
 }
+
+
+void Shader::setMat4(const std::string &name, const glm::mat4 &mat) const
+    {
+        glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+    }
+
+
+void Shader::setVec3(const std::string &name, const glm::vec3 &value) const
+    { 
+        glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]); 
+    }
