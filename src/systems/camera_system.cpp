@@ -7,6 +7,8 @@ CameraSystem::CameraSystem(std::vector<Shader*> shaders,GLFWwindow* window){
     glUseProgram(shader->ID);
     int viewLocation = glGetUniformLocation(shader->ID,"view");
     viewLocations[shader->ID] = viewLocation;
+    int viewPosition = glGetUniformLocation(shader->ID,"viewPos");
+    viewPositions[shader->ID] = viewPosition;
     }
 }
 
@@ -49,6 +51,7 @@ bool CameraSystem::update(
             for (auto shader:shaders){
             glUseProgram(shader->ID);//maybe not needed?
             glUniformMatrix4fv(viewLocations[shader->ID],1,GL_FALSE,glm::value_ptr(view));
+            glUniform3fv(viewPositions[shader->ID],1,glm::value_ptr(pos));
             }
 
 

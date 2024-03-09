@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include "../include/glad/glad.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -12,6 +13,8 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#define LIGHT_SRC_SHADER 1
+#define LIGHT_DST_SHADER 0
 
 #define PI glm::pi<float>()
 #define HALF_PI glm::half_pi<float>()

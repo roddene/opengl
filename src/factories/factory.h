@@ -10,6 +10,9 @@
 
 #include "sphere.h"
 #include "octahedron.h"
+#include "cube.h"
+
+
 class Factory{
 
     public:
@@ -26,7 +29,11 @@ class Factory{
 
     void make_cube(glm::vec3 position,glm::vec3 eulers,glm::vec3 eulerVelocity);
 
+    void make_cube_light(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity);
+
     void make_sphere(glm::vec3 position,glm::vec3 eulers,glm::vec3 eulerVelocity);
+
+    void make_sphere_test(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity);
 
     void make_octahedron(glm::vec3 position,glm::vec3 eulers,glm::vec3 eulerVelocity);
     void make_sphere_to_octahedron(glm::vec3 position,glm::vec3 eulers,glm::vec3 eulerVelocity);
@@ -46,9 +53,8 @@ class Factory{
     std::vector<unsigned int> textures;
     std::vector<Shader*> shaders;
 
-    RenderComponent make_shape_colored(MeshVectorComponent details,unsigned int frameCount);
+    RenderComponent make_shape_colored(MeshVectorComponent details,unsigned int frameCount,unsigned int shaderIndex);
 
-    RenderComponent make_cube_mesh(glm::vec3 size);
 
     
 

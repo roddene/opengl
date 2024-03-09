@@ -21,6 +21,7 @@ src/view/shader.cpp
 src/factories/factory.cpp
 src/factories/sphere.cpp
 src/factories/octahedron.cpp
+src/factories/cube.cpp
 ) 
 
 

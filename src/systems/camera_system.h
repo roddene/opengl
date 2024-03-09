@@ -21,4 +21,5 @@ class CameraSystem{
     std::vector<Shader*> shaders;
     
     std::unordered_map<unsigned int, unsigned int> viewLocations;
+    std::unordered_map<unsigned int, unsigned int> viewPositions;
 };

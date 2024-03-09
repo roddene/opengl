@@ -17,5 +17,5 @@ void main()
     gl_Position = projection* view*model*vec4(vertexPos, 1.0);
     fragmentColor = vertexColor;
     fragmentPos = vec3(model*vec4(vertexPos,1.0));
-    fragmentNormal = vertexPos;
+    fragmentNormal = mat3(transpose(inverse(model)))*vertexNormal;
 }

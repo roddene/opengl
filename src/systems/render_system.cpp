@@ -34,9 +34,9 @@ void RenderSystem::update(
 
         glUseProgram(shaders[0]->ID); // maybe not needed?
         int lightColor = glGetUniformLocation(shaders[0]->ID, "lightColor");
-        glm::vec3 light = {0.0f, 1.0f, 1.0f};
+        glm::vec3 light = {1.0f, 1.0f, 1.0f};
         glUniform3fv(lightColor, 1, glm::value_ptr(light));
-        glm::vec3 lightPos = {3.0f,1.0f,-1.0f};
+        glm::vec3 lightPos = {3.0f,2.0f,3.0f};
         shaders[0]->setVec3("lightPos",lightPos);
 
         int shaderId = entity.second.shaderId;

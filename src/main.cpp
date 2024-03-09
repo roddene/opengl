@@ -8,6 +8,7 @@
 #include "factories/factory.h"
 #include "factories/sphere.h"
 #include "factories/octahedron.h"
+#include "factories/cube.h"
 #include "view/shader.h"
 
 
@@ -33,7 +34,14 @@ int main()
     //factory->make_sphere({2,0,0},{0,0,0},{0,0,10.0f});
     //factory->make_octahedron({4,0,0},{0,0,0},{0,0,10.0f});
     factory->make_sphere_to_octahedron({0,0,0},{0,0,0},{0,0,10.0f});
-    factory->make_cube({3.0,1.0,-1.0},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f});
+
+    //factory->make_sphere({0,0,0},{0,0,0},{0,0,0.0f});
+    //factory->make_sphere_test({2.5,0,0},{0,0,0},{0,0,0.0f});
+
+    // factory->make_octahedron({0,0,0},{0,0,0},{0,0,10.0f});
+    factory->make_cube({3.5,1.0,-1.0},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f});
+    factory->make_cube_light({3.0,2.0,3.0},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f});
+
     std::cout <<"make cam"; 
     unsigned int cameraEntity = factory->make_camera({0.0f,0.0f,-2.0f},{0.0f,180.0f,230.0f});
 

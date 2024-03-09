@@ -12,5 +12,5 @@ uniform mat4 projection;
 void main()
 {
     gl_Position = projection* view*model*vec4(vertexPos, 1.0);
-    fragmentColor =vec3(1.0,1.0,0.0);
+    fragmentColor = vertexColor;
 }
