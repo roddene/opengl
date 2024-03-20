@@ -31,6 +31,8 @@ void RenderSystem::update(
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, transform.position);
         model = glm::rotate(model, glm::radians(transform.eulers.z), {0.0f, 0.0f, 1.0f});
+        model = glm::rotate(model, glm::radians(transform.eulers.y), {0.0f, 1.0f, 0.0f});
+        model = glm::rotate(model, glm::radians(transform.eulers.x), {1.0f, 0.0f, 0.0f});
 
         glUseProgram(shaders[0]->ID); // maybe not needed?
         int lightColor = glGetUniformLocation(shaders[0]->ID, "lightColor");

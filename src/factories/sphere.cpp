@@ -70,17 +70,16 @@ MeshVectorComponent make_sphere_mesh(unsigned int res)
 					indices.push_back(bottomLeft); // bottom left
 					indices.push_back(topRight); // top right
 
-					glm::vec3 vectorA = {-vertices[9*topLeft] + vertices[9*topRight],
-					-vertices[9*topLeft+1]+vertices[9*topRight+1],
-					-vertices[9*topLeft+2]+vertices[9*topRight+2]}; 
-					float s = glm::sign(phi);
-					vectorA = vectorA * glm::vec3 {s,s,s};
+					glm::vec3 vectorA = {-vertices[9*topLeft] + vertices[9*bottomLeft],
+					-vertices[9*topLeft+1]+vertices[9*bottomLeft+1],
+					-vertices[9*topLeft+2]+vertices[9*bottomLeft+2]}; 
 					
 					
 
-					glm::vec3 vectorB = {vertices[9*topRight] - vertices[9*bottomRight],
-					vertices[9*topRight+1]-vertices[9*bottomRight+1],
-					vertices[9*topRight+2]-vertices[9*bottomRight+2]}; 
+					glm::vec3 vectorB = {-vertices[9*bottomRight] + vertices[9*bottomLeft],
+					-vertices[9*bottomRight+1]+vertices[9*bottomLeft+1],
+					-vertices[9*bottomRight+2]+vertices[9*bottomLeft+2]}; 
+					
 
 
 					glm::vec3 normal = glm::normalize(glm::cross(vectorB,vectorA));

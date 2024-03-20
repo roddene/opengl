@@ -31,7 +31,7 @@ void App::run()
     {
 
 
-        motionSystem->update(transformComponents, physicsComponents, 16.67f / 1000.0f);
+        motionSystem->update(transformComponents, physicsComponents, renderComponents,16.67f / 1000.0f);
 
         bool should_close = cameraSystem->update(
             transformComponents, cameraID, *cameraComponent, 16.67f / 1000.0f);
@@ -83,7 +83,7 @@ void App::set_up_opengl(){
     Shader* dst_shader = new Shader("./src/shaders/light_dst.vs", "./src/shaders/light_dst.fs");
     Shader* src_shader = new Shader("./src/shaders/light_src.vs", "./src/shaders/light_src.fs");
 glm::mat4 projection = glm::perspective(
-		45.0f, 640.0f / 480.0f, 0.1f, 10.0f);
+		45.0f, 640.0f / 480.0f, 0.1f, 100.0f);
     shaders.push_back(dst_shader);
    shaders.push_back(src_shader);
     for (auto shader:shaders){

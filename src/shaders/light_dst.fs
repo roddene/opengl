@@ -11,6 +11,7 @@ out vec4 screenColor;
 
 void main()
 {
+    
     float specularStrength = 0.5;
     float ambientStrength = 0.1;
     vec3 ambient = ambientStrength * lightColor;

@@ -10,8 +10,8 @@
 
 #include "sphere.h"
 #include "octahedron.h"
-#include "cube.h"
 
+#include "cube.h"
 
 class Factory{
 
@@ -28,6 +28,7 @@ class Factory{
     unsigned int make_camera(glm::vec3 position,glm::vec3 eulers);
 
     void make_cube(glm::vec3 position,glm::vec3 eulers,glm::vec3 eulerVelocity);
+    void make_cube_soft(glm::vec3 position,glm::vec3 eulers,glm::vec3 eulerVelocity);
 
     void make_cube_light(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity);
 
@@ -35,6 +36,7 @@ class Factory{
 
     void make_sphere_test(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity);
 
+    void make_ground(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity);
     void make_octahedron(glm::vec3 position,glm::vec3 eulers,glm::vec3 eulerVelocity);
     void make_sphere_to_octahedron(glm::vec3 position,glm::vec3 eulers,glm::vec3 eulerVelocity);
 
@@ -55,9 +57,10 @@ class Factory{
 
     RenderComponent make_shape_colored(MeshVectorComponent details,unsigned int frameCount,unsigned int shaderIndex);
 
-
-    
-
+    RenderComponent make_shape_colored_soft(MeshVectorComponent details, unsigned int frameCount, unsigned int shaderIndex);
 
 
+    TransformComponent* make_transform_component(unsigned int entityID, glm::vec3 position, glm::vec3 eulers);
+    void make_physics_component(unsigned int entityID, glm::vec3 eulerVelocity);
+    void make_physics_component_soft(unsigned int entityID, glm::vec3 eulerVelocity,TransformComponent* transform);
 };
