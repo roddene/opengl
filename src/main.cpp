@@ -5,12 +5,14 @@
 #include "components/transform_component.h"
 #include "components/physics_component.h"
 #include "components/render_component.h"
+#include "components/angle_axis_component.h"
 #include "factories/factory.h"
 #include "factories/sphere.h"
 #include "factories/octahedron.h"
 #include "factories/cube.h"
 #include "view/shader.h"
 #include "physics/softbody.h"
+#include "physics/rigidbody.h"
 
 
 int main()
@@ -35,20 +37,29 @@ int main()
     // }}
     //factory->make_sphere({2,0,0},{0,0,0},{0,0,10.0f});
     //factory->make_octahedron({4,0,0},{0,0,0},{0,0,10.0f});
-    factory->make_sphere_to_octahedron({0,0,0},{0,0,0},{0,0,10.0f});
+
+    AngleAxis angleAxisVel = {1.0f,{1.0f,1.0f,0.5f}};
+
+    AngleAxis angleAxisVelStat = {0.0f,{0.0f,0.0f,0.0f}};
+
+    factory->make_sphere_to_octahedron({0,0,0},{0,{0,1,0}},{.25f,{1,0,0.0f}});
 
     //factory->make_sphere({0,0,0},{0,0,0},{0,0,0.0f});
     //factory->make_sphere_test({2.5,0,0},{0,0,0},{0,0,0.0f});
 
      //factory->make_octahedron({0,0,0},{0,0,0},{0,0,10.0f});
-    factory->make_cube({3.5,1.0,-1.0},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f});
-    factory->make_ground({0.0,0.0,0.0},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f});
+    factory->make_cube({3.5,1.0,-1.0},{2.0f,{1.0f,0.0f,1.0f}},angleAxisVel);
 
-    factory->make_cube_soft({3.0,3.0,8.0},{60.0f,35.0f,0.0f},{0.0f,0.0f,0.0f});
-    factory->make_cube_light({3.0,2.0,3.0},{0.0f,0.0f,45.0f},{0.0f,10.0f,0.0f});
+    //factory->make_cuboid({3.5,1.0,-1.0},{1.0f,0.0f,0.0f},{0.0f,{0.0f,0.0f,1.0f}},angleAxisVel);
+
+    factory->make_ground({0.0,0.0,0.0},{0.0f,{0.0f,1.0f,0.0f}},angleAxisVelStat);
+
+    //factory->make_cube_soft({3.0,3.0,8.0},{0.0f,{60.0f,35.0f,0.0f}},angleAxisVel);
+    //factory->make_cuboid_rigid({3.0,3.0,-8.0},{0.0f,0.0f,0.0f},{0.0f,{1.0f,0.0f,0.0f}},angleAxisVel);
+    factory->make_cube_light({3.0,2.0,3.0},{45.0f,{0.0f,1.0f,1.0f}},angleAxisVel);
 
     std::cout <<"make cam"; 
-    unsigned int cameraEntity = factory->make_camera({0.0f,0.0f,-2.0f},{0.0f,180.0f,230.0f});
+    unsigned int cameraEntity = factory->make_camera({0.0f,0.0f,-2.0f},{0.0f,{1.0f,0.0f,0.0f}});
 
     CameraComponent* camera = new CameraComponent();
     app->cameraComponent = camera;

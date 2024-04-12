@@ -1,9 +1,12 @@
 #pragma once
 #include "../config.h"
-#include "../physics/physics.h"
+#include "../physics/softbody.h"
+#include "../physics/rigidbody.h"
+#include "../components/angle_axis_component.h"
 
 struct PhysicsComponent{
     glm::vec3 velocity;
-    glm::vec3 eulerVelocity;
+    glm::quat rotationQuat;
     SoftBody* softbody;
+    RigidBody* rigidbody;
 };

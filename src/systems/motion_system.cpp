@@ -10,7 +10,17 @@ void MotionSystem::update(
         RenderComponent render = renderComponents[entity.first]; 
 
         transformComponents[entity.first].position+=entity.second.velocity *dt;
-        transformComponents[entity.first].eulers+=entity.second.eulerVelocity * dt;
+        
+        float angle = (float) glfwGetTime()*.01f;
+        transformComponents[entity.first].quaternion = 
+
+        transformComponents[entity.first].quaternion*
+        physicsComponents[entity.first].rotationQuat;
+
+        //std::cout <<transformComponents[entity.first].quaternion.wxyz<<"\n"; 
+
+        //glm::conjugate(transformComponents[entity.first].quaternion);
+        
         if (physicsComponents[entity.first].softbody){
             
 
@@ -20,10 +30,12 @@ void MotionSystem::update(
             glBufferSubData(GL_ARRAY_BUFFER,0,vertices.size()*sizeof(float),vertices.data());
             
         }
-        if (transformComponents[entity.first].eulers.z >360){
 
-            transformComponents[entity.first].eulers.z-=360;
+        if(physicsComponents[entity.first].rigidbody){
+            physicsComponents[entity.first].rigidbody->update(dt);
         }
+        
+
 
 
     }

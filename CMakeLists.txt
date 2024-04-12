@@ -25,7 +25,8 @@ src/factories/factory.cpp
 src/factories/sphere.cpp
 src/factories/octahedron.cpp
 src/factories/cube.cpp
-src/physics/physics.cpp
+src/physics/softbody.cpp
+src/physics/rigidbody.cpp
 ) 
 
 

@@ -23,6 +23,12 @@ bool CameraSystem::update(
             //std::cout << transformComponents[cameraID].position.z<<"\n";
 
             glm::vec3& pos = transformComponents[cameraID].position;
+            //glm::quat& rotation = transformComponents[cameraID].quaternion;
+            glm::quat& rotation = transformComponents[cameraID].quaternion;
+
+
+
+
             glm::vec3& eulers = transformComponents[cameraID].eulers;
             float theta = glm::radians(eulers.z);
             float phi = glm::radians(eulers.y);
@@ -102,15 +108,24 @@ bool CameraSystem::update(
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         return true;
     }
-
+    
     glm::vec3 dEulers = {0.0f, 0.0f, 0.0f};
     double mouse_x, mouse_y;
     glfwGetCursorPos(window, &mouse_x, &mouse_y);
     glfwSetCursorPos(window, 320.0, 240.0);
     glfwPollEvents();
 
-    dEulers.z = -0.1f * static_cast<float>(mouse_x - 320.0);
-    dEulers.y = -0.1f * static_cast<float>(mouse_y - 240.0);
+    dEulers.z = -0.1f * static_cast<float>(mouse_x - SCREENWIDTH/2);
+    dEulers.y = -0.1f * static_cast<float>(mouse_y - SCREENHEIGHT/2);
+
+    glm::quat rotateZ =  glm::angleAxis(dEulers.z*.01f,glm::vec3{0.0f,0.0f,1.0f});
+    glm::quat rotateY =  glm::angleAxis(dEulers.y*.01f,glm::vec3{0.0f,1.0f,0.0f});
+
+    rotation*=rotateY*rotateZ;
+
+    //std::cout <<glm::to_string(eulers);
+    //std::cout << "rot: " << glm::to_string(360.0f*glm::eulerAngles(rotation)/TWO_PI) << "\n";
+
 
     eulers.y = fminf(89.0f, fmaxf(-89.0f, eulers.y + dEulers.y));
 

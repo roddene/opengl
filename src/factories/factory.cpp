@@ -17,37 +17,39 @@ Factory::~Factory()
     glDeleteVertexArrays(VAOs.size(), VAOs.data());
 }
 
-unsigned int Factory::make_camera(glm::vec3 position, glm::vec3 eulers)
+unsigned int Factory::make_camera(glm::vec3 position, AngleAxis angleaxis)
 {
 
-    make_transform_component(entities_made, position, eulers);
 
+    TransformComponent* transform =  make_transform_component(entities_made, position, angleaxis);
+
+    transform->eulers = {0.0f,90.0f,0.0f};
     return entities_made++;
 }
 
-void Factory::make_sphere(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity)
+void Factory::make_sphere(glm::vec3 position, AngleAxis angleaxis, AngleAxis angleAxisVelocity)
 {
-    make_transform_component(entities_made, position, eulers);
-    make_physics_component(entities_made, eulerVelocity);
+      make_transform_component(entities_made, position, angleaxis);
+    make_physics_component(entities_made, angleAxisVelocity);
 
     MeshVectorComponent vectors = make_sphere_mesh(100);
     RenderComponent render = make_shape_colored(vectors, 0, LIGHT_DST_SHADER);
     renderComponents[entities_made++] = render;
 }
 
-void Factory::make_sphere_test(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity)
+void Factory::make_sphere_test(glm::vec3 position, AngleAxis angleaxis, AngleAxis angleAxisVelocity)
 {
-    make_transform_component(entities_made, position, eulers);
-    make_physics_component(entities_made, eulerVelocity);
+    make_transform_component(entities_made, position, angleaxis);
+    make_physics_component(entities_made, angleAxisVelocity);
     MeshVectorComponent vectors = make_sphere_mesh_test(100);
     RenderComponent render = make_shape_colored(vectors, 0, LIGHT_DST_SHADER);
     renderComponents[entities_made++] = render;
 }
 
-void Factory::make_octahedron(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity)
+void Factory::make_octahedron(glm::vec3 position, AngleAxis angleaxis, AngleAxis angleAxisVelocity)
 {
-    make_transform_component(entities_made, position, eulers);
-    make_physics_component(entities_made, eulerVelocity);
+    make_transform_component(entities_made, position, angleaxis);
+    make_physics_component(entities_made, angleAxisVelocity);
 
     MeshVectorComponent vectors = make_octahedron_mesh(25);
     RenderComponent render = make_shape_colored(vectors, 0, LIGHT_DST_SHADER);
@@ -59,7 +61,7 @@ float Factory::lerp(float a, float b, float t)
     return (a * (1.0 - t)) + (b * t);
 }
 
-void Factory::make_sphere_to_octahedron(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity)
+void Factory::make_sphere_to_octahedron(glm::vec3 position, AngleAxis angleaxis, AngleAxis angleAxisVelocity)
 {
 
     MeshVectorComponent octVectors = make_octahedron_mesh(100);
@@ -69,8 +71,8 @@ void Factory::make_sphere_to_octahedron(glm::vec3 position, glm::vec3 eulers, gl
     for (int frameIndex = 1; frameIndex <= frameCount; frameIndex++)
     {
 
-        make_transform_component(entities_made, position, eulers);
-        make_physics_component(entities_made, eulerVelocity);
+        make_transform_component(entities_made, position, angleaxis);
+        make_physics_component(entities_made, angleAxisVelocity);
         std::vector<float> vertexVector = {};
         for (unsigned int i = 0; i < octVectors.vertices.size(); i++)
         {
@@ -84,8 +86,8 @@ void Factory::make_sphere_to_octahedron(glm::vec3 position, glm::vec3 eulers, gl
     // bounce back
     for (int frameIndex = frameCount; frameIndex > 0; frameIndex--)
     {
-        make_transform_component(entities_made, position, eulers);
-        make_physics_component(entities_made, eulerVelocity);
+        make_transform_component(entities_made, position, angleaxis);
+        make_physics_component(entities_made, angleAxisVelocity);
 
         std::vector<float> vertexVector = {};
         for (unsigned int i = 0; i < octVectors.vertices.size(); i++)
@@ -147,30 +149,75 @@ RenderComponent Factory::make_shape_colored(MeshVectorComponent details, unsigne
     record.shaderId = shaders[shaderIndex]->ID;
     return record;
 }
-TransformComponent* Factory::make_transform_component(unsigned int entityID, glm::vec3 position, glm::vec3 eulers)
+TransformComponent* Factory::make_transform_component(unsigned int entityID, glm::vec3 position, AngleAxis angleaxis)
 {
     TransformComponent transform;
     transform.position = position;
-    transform.eulers = eulers;
+    assert(glm::length(angleaxis.axis) > 0.0f);
+
+    transform.quaternion= glm::angleAxis(angleaxis.angle,glm::normalize(angleaxis.axis));
     transformComponents[entityID] = transform;
     return &transformComponents[entityID];
 }
-void Factory::make_physics_component(unsigned int entityID, glm::vec3 eulerVelocity)
+
+void Factory::make_physics_component(unsigned int entityID,AngleAxis angleAxisVelocity,glm::vec3 velocity)
 {
     PhysicsComponent physics = {};
-    physics.velocity = {0.0f, 0.0f, 0.0f};
-    physics.eulerVelocity = eulerVelocity;
-    physicsComponents[entityID] = physics;
-}
-void Factory::make_physics_component_soft(unsigned int entityID, glm::vec3 eulerVelocity,TransformComponent* transform)
-{
-    PhysicsComponent physics = {};
-    physics.velocity = {0.0f, 0.0f, 0.0f};
-    physics.eulerVelocity = eulerVelocity;
-    physics.softbody = new SoftBody(transform);
+    physics.velocity = velocity;
+    if (glm::length(angleAxisVelocity.axis) <=0.0f){
+        physics.rotationQuat = {0,0,0,1.0f};
+    }else{
+    physics.rotationQuat= glm::angleAxis(angleAxisVelocity.angle/90,glm::normalize(angleAxisVelocity.axis));
+    }
+
+
     physicsComponents[entityID] = physics;
 }
 
+
+
+void Factory::make_physics_component(unsigned int entityID, AngleAxis angleAxisVelocity)
+{
+    PhysicsComponent physics = {};
+    physics.velocity = {0.0f,0.0f,0.0f};
+ if (glm::length(angleAxisVelocity.axis) <=0.0f){
+        physics.rotationQuat = {0,0,0,1.0f};
+    }else{
+    physics.rotationQuat= glm::angleAxis(angleAxisVelocity.angle/90,glm::normalize(angleAxisVelocity.axis));
+    }
+
+
+    physicsComponents[entityID] = physics;
+}
+void Factory::make_physics_component_soft(unsigned int entityID, AngleAxis angleAxisVelocity,TransformComponent* transform)
+{
+    PhysicsComponent physics = {};
+    physics.velocity = {0.0f, 0.0f, 0.0f};
+    if (glm::length(angleAxisVelocity.axis) <=0.0f){
+        physics.rotationQuat = {0,0,0,1.0f};
+    }else{
+    physics.rotationQuat= glm::angleAxis(angleAxisVelocity.angle/90,glm::normalize(angleAxisVelocity.axis));
+    }
+
+    physics.softbody = new SoftBody(transform);
+    physicsComponents[entityID] = physics;
+}
+void Factory::make_physics_component_rigid(unsigned int entityID, AngleAxis angleAxisVelocity,TransformComponent* transform)
+{
+    PhysicsComponent physics = {};
+    physics.velocity = {0.0f, 0.0f, 0.0f};
+
+     if (glm::length(angleAxisVelocity.axis) <=0.0f){
+        physics.rotationQuat = {0,0,0,1.0f};
+    }else{
+    physics.rotationQuat= glm::angleAxis(angleAxisVelocity.angle/90,glm::normalize(angleAxisVelocity.axis));
+
+    }
+
+
+    physics.rigidbody= new RigidBody(transform);
+    physicsComponents[entityID] = physics;
+}
 
 RenderComponent Factory::make_shape_colored_soft(MeshVectorComponent details, unsigned int frameCount, unsigned int shaderIndex)
 {
@@ -219,41 +266,62 @@ RenderComponent Factory::make_shape_colored_soft(MeshVectorComponent details, un
     return record;
 }
 
-void Factory::make_ground(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity)
+void Factory::make_ground(glm::vec3 position, AngleAxis angleaxis, AngleAxis angleAxisVelocity)
 {
-    make_transform_component(entities_made, position, eulers);
-    make_physics_component(entities_made, eulerVelocity);
+    make_transform_component(entities_made, position, angleaxis);
+    make_physics_component(entities_made, angleAxisVelocity);
 
     MeshVectorComponent vectors = make_cube_mesh({100.0f, 100.0f, 0.0f});
     RenderComponent render = make_shape_colored(vectors, 0, LIGHT_DST_SHADER);
     renderComponents[entities_made++] = render;
 }
 
-void Factory::make_cube(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity)
+void Factory::make_cube(glm::vec3 position, AngleAxis angleaxis, AngleAxis angleAxisVelocity)
 {
-    make_transform_component(entities_made, position, eulers);
-    make_physics_component(entities_made, eulerVelocity);
+    make_transform_component(entities_made, position, angleaxis);
+    make_physics_component(entities_made, angleAxisVelocity);
 
     MeshVectorComponent vectors = make_cube_mesh({0.5f, 0.5f, 0.5f});
     RenderComponent render = make_shape_colored(vectors, 0, LIGHT_DST_SHADER);
     renderComponents[entities_made++] = render;
 }
 
-void Factory::make_cube_soft(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity)
+void Factory::make_cuboid_rigid(glm::vec3 position,glm::vec3 velocity, AngleAxis angleaxis, AngleAxis angleAxisVelocity)
 {
-    TransformComponent* transform = make_transform_component(entities_made, position, eulers);
-    make_physics_component_soft(entities_made, eulerVelocity,transform);
+    TransformComponent* transform = make_transform_component(entities_made, position, angleaxis);
+    make_physics_component_rigid(entities_made, angleAxisVelocity,transform);
+
+    MeshVectorComponent vectors = make_cube_mesh({0.1f, 1.0f, 2.5f});
+    RenderComponent render = make_shape_colored(vectors, 0, LIGHT_DST_SHADER);
+    renderComponents[entities_made++] = render;
+}
+
+void Factory::make_cuboid(glm::vec3 position,glm::vec3 velocity, AngleAxis angleaxis, AngleAxis angleAxisVelocity)
+{
+    make_transform_component(entities_made, position, angleaxis);
+    make_physics_component(entities_made, angleAxisVelocity,velocity);
+
+    MeshVectorComponent vectors = make_cube_mesh({0.5f, 1.0f, 2.5f});
+    RenderComponent render = make_shape_colored(vectors, 0, LIGHT_DST_SHADER);
+    renderComponents[entities_made++] = render;
+}
+
+
+void Factory::make_cube_soft(glm::vec3 position, AngleAxis angleaxis, AngleAxis angleAxisVelocity)
+{
+    TransformComponent* transform = make_transform_component(entities_made, position, angleaxis);
+    make_physics_component_soft(entities_made, angleAxisVelocity,transform);
 
     MeshVectorComponent vectors = make_cube_mesh_soft({0.5f, 0.5f, 0.5f});
     RenderComponent render = make_shape_colored_soft(vectors, 0, LIGHT_SRC_SHADER);
     renderComponents[entities_made++] = render;
 }
 
-void Factory::make_cube_light(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity)
+void Factory::make_cube_light(glm::vec3 position, AngleAxis angleaxis, AngleAxis angleAxisVelocity)
 {
 
-    make_transform_component(entities_made, position, eulers);
-    make_physics_component(entities_made, eulerVelocity);
+    make_transform_component(entities_made, position, angleaxis);
+    make_physics_component(entities_made, angleAxisVelocity);
 
     MeshVectorComponent vectors = make_cube_mesh({0.5f, 0.5f, 0.5f});
     RenderComponent render = make_shape_colored(vectors, 0, LIGHT_SRC_SHADER);

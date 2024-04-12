@@ -28,11 +28,21 @@ void RenderSystem::update(
     for (std::pair<unsigned int, RenderComponent> entity : renderComponents)
     {
         TransformComponent &transform = transformComponents[entity.first];
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, transform.position);
-        model = glm::rotate(model, glm::radians(transform.eulers.z), {0.0f, 0.0f, 1.0f});
-        model = glm::rotate(model, glm::radians(transform.eulers.y), {0.0f, 1.0f, 0.0f});
-        model = glm::rotate(model, glm::radians(transform.eulers.x), {1.0f, 0.0f, 0.0f});
+    
+
+        glm::mat4 rotation =glm::mat4_cast(transform.quaternion);
+        glm::mat4 translation = glm::translate(glm::mat4(1.0f),transform.position); 
+        glm::mat4 model = translation*rotation;
+
+        //glm::mat4 model = glm::mat4(1.0f);
+
+       // model = glm::translate(model, transform.position);
+
+
+        // model = glm::rotate(model, glm::radians(transform.eulers.z), {0.0f, 0.0f, 1.0f});
+        // model = glm::rotate(model, glm::radians(transform.eulers.y), {0.0f, 1.0f, 0.0f});
+        // model = glm::rotate(model, glm::radians(transform.eulers.x), {1.0f, 0.0f, 0.0f});
+        
 
         glUseProgram(shaders[0]->ID); // maybe not needed?
         int lightColor = glGetUniformLocation(shaders[0]->ID, "lightColor");
