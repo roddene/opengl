@@ -55,7 +55,7 @@ int main()
     factory->make_ground({0.0,0.0,0.0},{0.0f,{0.0f,1.0f,0.0f}},angleAxisVelStat);
 
     //factory->make_cube_soft({3.0,3.0,8.0},{0.0f,{60.0f,35.0f,0.0f}},angleAxisVel);
-    //factory->make_cuboid_rigid({3.0,3.0,-8.0},{0.0f,0.0f,0.0f},{0.0f,{1.0f,0.0f,0.0f}},angleAxisVel);
+    factory->make_cuboid_rigid({3.0,3.0,-8.0},{0.0f,0.0f,0.0f},{0.0f,{1.0f,0.0f,0.0f}},angleAxisVelStat);
     factory->make_cube_light({3.0,2.0,3.0},{45.0f,{0.0f,1.0f,1.0f}},angleAxisVel);
 
     std::cout <<"make cam"; 

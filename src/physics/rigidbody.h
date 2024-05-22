@@ -14,18 +14,17 @@ class RigidBody{
     void update(float dt);
 
 
-    Eigen::Vector<float,3> pos;
-    Eigen::Vector<float,3> vel;
-    Eigen::Matrix<float,3,3> rotation;
-    Eigen::Vector<float,3> angular_vel;
+    glm::vec3 pos;
+    glm::vec3 vel;
+    glm::mat3 rotation;
+    glm::vec3 angular_vel;
 
-    Eigen::Matrix<float,3,3> inverse_inertia;
+    glm::mat3 inverse_inertia;
     private:
     TransformComponent* transform;
     
-    Eigen::Vector<float, 3> rotation_to_eulers(Eigen::Matrix<float, 3, 3>);
-    Eigen::Matrix<float, 3, 3> create_inertia_tensor(float a, float b, float c);
-    Eigen::Matrix<float, 3, 3> create_cross_matrix(Eigen::Vector<float, 3>);
+    glm::mat3 create_inertia_tensor(float a, float b, float c);
+    glm::mat3 create_cross_matrix(glm::vec3);
 };
 
 
