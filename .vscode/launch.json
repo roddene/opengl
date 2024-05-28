@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+      "name":"testing",
+      "type":"cppdbg",
+      "request":"launch",
+      "cwd": "${fileDirname}",
+      "program": "${workspaceRoot}/build/Debug/opengl_project.exe" 
+        }
+    ]
+}

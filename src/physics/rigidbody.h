@@ -7,7 +7,6 @@
 
 class RigidBody{
     public:
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 
     RigidBody(TransformComponent* transform);
 
