@@ -11,10 +11,13 @@ App::~App()
     glDeleteVertexArrays(VAOs.size(), VAOs.data());
     for (auto shader:shaders){
     glDeleteProgram(shader->ID);
+    delete shader;
     }
+    delete cameraComponent;
     delete motionSystem;
     delete cameraSystem;
     delete renderSystem;
+    
 
     glfwTerminate();
 }
@@ -91,6 +94,8 @@ glm::mat4 projection = glm::perspective(
     unsigned int projLocation = glGetUniformLocation(shader->ID, "projection");
 	glUniformMatrix4fv(projLocation, 1, GL_FALSE, glm::value_ptr(projection));
     }
+    //delete(dst_shader);
+    //delete(src_shader);
 }
 
 void App::make_systems(){

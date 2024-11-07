@@ -7,7 +7,7 @@ rotation = glm::mat3(1.0f);
 this->transform = transform;
 pos = {0,0,0};
 vel = {0,0,0};
-angular_vel = {.0002,0,.1};
+angular_vel = {.0f,0.1f,.001f};
 
 inverse_inertia = create_inertia_tensor(.1f,1.0f,2.5f);
 inverse_inertia[0][0] = 1/inverse_inertia[0][0];

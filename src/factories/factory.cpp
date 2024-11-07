@@ -15,6 +15,11 @@ Factory::~Factory()
     glDeleteBuffers(EBOs.size(), EBOs.data());
     glDeleteBuffers(VBOs.size(), VBOs.data());
     glDeleteVertexArrays(VAOs.size(), VAOs.data());
+    for(auto physicsComponent:physicsComponents){
+        delete physicsComponent.second.rigidbody;
+        delete physicsComponent.second.softbody;
+    }
+
 }
 
 unsigned int Factory::make_camera(glm::vec3 position, AngleAxis angleaxis)

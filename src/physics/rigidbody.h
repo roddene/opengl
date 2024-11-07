@@ -1,8 +1,7 @@
 #pragma once
 
 #include "../config.h"
-#include <Eigen/Dense>
-#include "../../lib/eigen-3.4.0/Eigen/Dense"
+#include <eigen3/Eigen/Dense>
 #include "../components/transform_component.h"
 
 class RigidBody{
